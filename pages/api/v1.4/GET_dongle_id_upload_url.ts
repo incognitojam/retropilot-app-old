@@ -63,7 +63,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (existing_drive) {
       await prisma.drives.update({
-        where: { dongle_id, identifier: drive_identifier },
+        where: { id: existing_drive.id },
         data: {
           max_segment: Math.max(existing_drive.max_segment ?? 0, parseInt(segment)),
           upload_complete: false,
