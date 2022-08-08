@@ -12,7 +12,9 @@ import prisma from '../../../lib/prisma';
  */
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') {
-    return res.status(405);
+    res.setHeader('Allow', ['POST']);
+    res.status(405).end('Method Not Allowed');
+    return;
   }
 
   const {
@@ -26,24 +28,25 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const tokenValidation = await verify(register_token, publicKey as Secret);
 
   if (!tokenValidation || !imei || !serial) {
-    return res.status(400).send('Invalid JWT.');
+    res.status(400).end('Bad Request');
+    return;
   }
 
   const existingDevice = await prisma.device.findFirst({ where: { serial } });
-
   if (existingDevice) {
-    return res.json({ first_pair: false, dongle_id: existingDevice.dongleId });
-  } else {
-    const device = await prisma.device.create({
-      data: {
-        dongleId: randomUUID(),
-        imei,
-        serial,
-        deviceType: 'freon',
-        publicKey,
-      },
-    });
-
-    return res.json({ dongle_id: device.dongleId, access_token: 'DEPRECATED-BUT-REQUIRED-FOR-07' });
+    res.json({ first_pair: false, dongle_id: existingDevice.dongleId });
+    return;
   }
+
+  const device = await prisma.device.create({
+    data: {
+      dongleId: randomUUID(),
+      imei,
+      serial,
+      deviceType: 'freon',
+      publicKey,
+    },
+  });
+
+  res.status(201).json({ dongle_id: device.dongleId, access_token: 'DEPRECATED-BUT-REQUIRED-FOR-07' });
 };

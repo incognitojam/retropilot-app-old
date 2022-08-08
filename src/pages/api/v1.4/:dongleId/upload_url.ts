@@ -12,14 +12,19 @@ import prisma from '../../../../lib/prisma';
  */
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'GET') {
-    return res.status(405);
+    res.setHeader('Allow', ['GET']);
+    res.status(405).end('Method Not Allowed');
+    return;
   }
 
   const dongleId = req.query.dongleId as string;
   let path = req.query.path as string;
 
   const device = await prisma.device.findFirst({ where: { dongleId } });
-  if (!device) return res.status(404).send('Not found.');
+  if (!device) {
+    res.status(404).end('Not Found');
+    return;
+  }
 
   const ts = Date.now();
   const dongle_hash: string = sha256.hmac.create(process.env.APP_SALT as string).update(dongleId as string).hex();
@@ -58,8 +63,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     const VALID_FILES = ['fcamera.hevc', 'qcamera.ts', 'dcamera.hevc', 'rlog.bz2', 'qlog.bz2', 'ecamera.hevc'];
     if (VALID_FILES.indexOf(filename) === -1 || Number.isNaN(segment)) {
-      console.log(filename, segment, VALID_FILES.indexOf(filename) === -1, Number.isNaN(segment));
-      return res.status(400).send('Malformed Request.');
+      console.error(filename, segment, VALID_FILES.indexOf(filename) === -1, Number.isNaN(segment));
+      res.status(400).send('Bad Request');
+      return;
     }
 
     const drive_hash: string = sha256.hmac.create(process.env.APP_SALT as string).update(driveIdentifier).hex();
@@ -107,7 +113,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   upload_token = sha256.hmac.create(process.env.APP_SALT as string).update(dongleId + upload_filename + ts).hex();
 
-  return res.json({
+  res.json({
     url: `${process.env.BASE_UPLOAD_URL}?filename=${upload_filename}&dir=${upload_directory}&dongleId=${dongleId}&ts=${ts}&token=${upload_token}`,
   });
 };

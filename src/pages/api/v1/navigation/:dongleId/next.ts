@@ -10,5 +10,5 @@ import type { NextApiRequest, NextApiResponse } from 'next';
  */
 export default (req: NextApiRequest, res: NextApiResponse) => {
   // TODO: implement
-  return res.status(501);
+  res.status(501).end('Not Implemented');
 };

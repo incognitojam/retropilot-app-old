@@ -4,11 +4,14 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 export default (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case 'GET':
-      return get(req, res);
+      get(req, res);
+      break;
     case 'PATCH':
-      return patch(req, res);
+      patch(req, res);
+      break;
     default:
-      return res.status(405);
+      res.setHeader('Allow', ['GET', 'PATCH']);
+      res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 };
 
@@ -20,7 +23,7 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
  * DEPRECATED: Superceded by GET /v1.1/devices/:dongleId
  */
 const get = (req: NextApiRequest, res: NextApiResponse) => {
-  return res.redirect((req.url as string).replace('v1', 'v1.1'));
+  res.redirect((req.url as string).replace('v1', 'v1.1'));
 };
 
 /**
@@ -32,5 +35,5 @@ const get = (req: NextApiRequest, res: NextApiResponse) => {
  */
 const patch = (req: NextApiRequest, res: NextApiResponse) => {
   // TODO: implement
-  return res.status(501);
+  res.status(501).end('Not Implemented');
 };

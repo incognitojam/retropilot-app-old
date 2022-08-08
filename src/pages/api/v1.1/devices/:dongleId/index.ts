@@ -12,10 +12,11 @@ export default async (req: NextApiRequest, res: NextApiResponse<Api.Response<Api
   // TODO: user guard and filter by account
   const device = await prisma.device.findFirst({ where: { dongleId: req.query.dongleId as string } });
   if (!device) {
-    return res.status(404);
+    res.status(404).end('Not Found');
+    return;
   }
 
-  return res.json({
+  res.json({
     dongle_id: device.dongleId,
     alias: device.nickname,
     serial: device.serial,

@@ -9,7 +9,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
  */
 const get = (req: NextApiRequest, res: NextApiResponse) => {
   // TODO: implement
-  return res.status(501);
+  res.status(501).end('Not Implemented');
 };
 
 /**
@@ -21,7 +21,7 @@ const get = (req: NextApiRequest, res: NextApiResponse) => {
  */
 const put = (req: NextApiRequest, res: NextApiResponse) => {
   // TODO: implement
-  return res.status(501);
+  res.status(501).end('Not Implemented');
 };
 
 /**
@@ -34,7 +34,7 @@ const put = (req: NextApiRequest, res: NextApiResponse) => {
  */
 const patch = (req: NextApiRequest, res: NextApiResponse) => {
   // TODO: implement
-  return res.status(501);
+  res.status(501).end('Not Implemented');
 };
 
 
@@ -42,13 +42,17 @@ const patch = (req: NextApiRequest, res: NextApiResponse) => {
 export default (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case 'GET':
-      return get(req, res);
+      get(req, res);
+      break;
     case 'PUT':
-      return put(req, res);
+      put(req, res);
+      break;
     case 'PATCH':
     case 'DELETE':
-      return patch(req, res);
+      patch(req, res);
+      break;
     default:
-      return res.status(405);
+      res.setHeader('Allow', ['GET', 'PUT', 'PATCH', 'DELETE']);
+      res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 };

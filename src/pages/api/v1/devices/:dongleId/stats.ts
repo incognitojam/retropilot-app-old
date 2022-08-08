@@ -6,5 +6,5 @@ import type { NextApiRequest, NextApiResponse } from 'next';
  * DEPRECATED: Superceded by GET /v1.1/devices/:dongleId/stats
  */
 export default (req: NextApiRequest, res: NextApiResponse) => {
-  return res.redirect((req.url as string).replace('v1', 'v1.1'));
+  res.redirect((req.url as string).replace('v1', 'v1.1'));
 };
