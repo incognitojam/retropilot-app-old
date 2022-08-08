@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 /**
- * GET /v1/me/devices
+ * GET /v1.1/devices/:dongleId/stats
  *
- * Account - Devices
+ * Device driving statistics
  *
- * List devices owned or readable by authenticated user.
+ * Returns aggregate driving statistics for a device.
  */
 export default (req: NextApiRequest, res: NextApiResponse) => {
   // TODO: implement

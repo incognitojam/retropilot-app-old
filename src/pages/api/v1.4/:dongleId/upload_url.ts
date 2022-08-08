@@ -1,13 +1,20 @@
-/*
-    Request a URL to which an openpilot file can be uploaded via PUT request.
-    This endpoint only accepts tokens signed with a device private key (openpilot 0.6.3 and newer.)
-*/
-
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { sha256 } from 'js-sha256';
-import prisma from '../../../../lib/prisma';
+import prisma from '../../../../../lib/prisma';
 
+/**
+ * GET /v1.4/:dongleId/upload_url
+ *
+ * Upload URL
+ *
+ * Request a URL to which an openpilot file can be uploaded via PUT request. This endpoint only
+ * accepts tokens signed with a device private key. (openpilot 0.6.3 and newer.)
+ */
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+  if (req.method !== 'GET') {
+    return res.status(405);
+  }
+
   const dongleId = req.query.dongleId as string;
   let path = req.query.path as string;
 
@@ -100,7 +107,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   upload_token = sha256.hmac.create(process.env.APP_SALT as string).update(dongleId + upload_filename + ts).hex();
 
-  return res.status(200).json({
+  return res.json({
     url: `${process.env.BASE_UPLOAD_URL}?filename=${upload_filename}&dir=${upload_directory}&dongleId=${dongleId}&ts=${ts}&token=${upload_token}`,
   });
 };

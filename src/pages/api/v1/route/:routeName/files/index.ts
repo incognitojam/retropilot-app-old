@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 /**
- * GET /v1/me/devices
+ * GET /v1/route/:routeName/files
  *
- * Account - Devices
+ * Raw driving data - Files
  *
- * List devices owned or readable by authenticated user.
+ * Retrieve uploaded files for a route. Calls to this API are rate limited to 5 per minute.
  */
 export default (req: NextApiRequest, res: NextApiResponse) => {
   // TODO: implement

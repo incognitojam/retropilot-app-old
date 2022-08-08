@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 /**
- * GET /v1/me/devices
+ * POST /v1/devices/:dongleId/unpair
  *
- * Account - Devices
+ * Unpair device
  *
- * List devices owned or readable by authenticated user.
+ * Unpair a device. Authed user must be device owner to perform.
  */
 export default (req: NextApiRequest, res: NextApiResponse) => {
   // TODO: implement

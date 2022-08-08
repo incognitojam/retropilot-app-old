@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 /**
- * GET /v1/me/devices
+ * GET /v1/devices/:dongleId/location
  *
- * Account - Devices
+ * Device location
  *
- * List devices owned or readable by authenticated user.
+ * Returns a gps location object of the last known location of a device.
  */
 export default (req: NextApiRequest, res: NextApiResponse) => {
   // TODO: implement

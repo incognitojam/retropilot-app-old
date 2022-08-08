@@ -1,13 +1,20 @@
-/*
-    Pair a comma EON to authenticated user's account.
-*/
-
 import { randomUUID } from 'crypto';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Secret, verify } from '../../../../lib/jwt';
 import prisma from '../../../../lib/prisma';
 
+/**
+ * POST /v2/pilotauth
+ *
+ * openpilot auth
+ *
+ * Pair a comma EON to authenticated user's account.
+ */
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+  if (req.method !== 'POST') {
+    return res.status(405);
+  }
+
   const {
     imei,
     imei2,

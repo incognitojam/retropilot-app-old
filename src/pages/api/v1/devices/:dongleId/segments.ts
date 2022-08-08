@@ -1,11 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 /**
- * GET /v1/me/devices
+ * GET /v1/devices/:dongleId/segments
  *
- * Account - Devices
+ * Segments
  *
- * List devices owned or readable by authenticated user.
+ * Returns time-sorted list of segments, each of which includes basic metadata derived from the
+ * openpilot logs.
  */
 export default (req: NextApiRequest, res: NextApiResponse) => {
   // TODO: implement

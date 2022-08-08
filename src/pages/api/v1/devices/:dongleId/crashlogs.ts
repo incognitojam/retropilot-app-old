@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 /**
- * GET /v1/me/devices
+ * GET /v1/devices/:dongleId/crashlogs
  *
- * Account - Devices
+ * Device crash logs
  *
- * List devices owned or readable by authenticated user.
+ * Returns most recent crashlogs uploaded from a device.
  */
 export default (req: NextApiRequest, res: NextApiResponse) => {
   // TODO: implement

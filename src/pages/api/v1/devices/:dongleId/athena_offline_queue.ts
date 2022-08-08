@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 /**
- * GET /v1/me/devices
+ * GET /v1/devices/:dongleId/athena_offline_queue
  *
- * Account - Devices
+ * Offline queue
  *
- * List devices owned or readable by authenticated user.
+ * Fetch messages stored for delivery once device comes online.
  */
 export default (req: NextApiRequest, res: NextApiResponse) => {
   // TODO: implement

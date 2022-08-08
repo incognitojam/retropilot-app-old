@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 /**
- * GET /v1/me/devices
+ * GET /v1/route/:routeName/files/qlog
  *
- * Account - Devices
+ * Raw driving data - Qlogs
  *
- * List devices owned or readable by authenticated user.
+ * Retrieve uploaded qlogs for a route.
  */
 export default (req: NextApiRequest, res: NextApiResponse) => {
   // TODO: implement
