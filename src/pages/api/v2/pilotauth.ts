@@ -32,7 +32,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const existingDevice = await prisma.device.findFirst({ where: { serial } });
 
   if (existingDevice) {
-    return res.status(200).json({ first_pair: false, dongle_id: existingDevice.dongleId });
+    return res.json({ first_pair: false, dongle_id: existingDevice.dongleId });
   } else {
     const device = await prisma.device.create({
       data: {
@@ -44,6 +44,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       },
     });
 
-    return res.status(200).json({ dongle_id: device.dongleId, access_token: 'DEPRECATED-BUT-REQUIRED-FOR-07' });
+    return res.json({ dongle_id: device.dongleId, access_token: 'DEPRECATED-BUT-REQUIRED-FOR-07' });
   }
 };
