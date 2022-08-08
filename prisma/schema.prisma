@@ -62,7 +62,7 @@ model VerificationToken {
 model Device {
   dongleId        String   @unique @db.VarChar(36)
   pairedUserId    String?
-  nickname        String   @db.VarChar(20)
+  nickname        String   @db.VarChar(20) @default("")
   imei            String
   serial          String
   deviceType      String
