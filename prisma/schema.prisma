@@ -32,19 +32,20 @@ model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
   userId       String
-  expiresAt    DateTime
+  expires      DateTime
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
-  id              String    @id @default(cuid())
-  name            String
-  email           String    @unique
-  emailVerifiedAt DateTime?
-  banned          Boolean   @default(false)
-  admin           Boolean   @default(false)
-  createdAt       DateTime  @default(now())
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  banned        Boolean   @default(false)
+  admin         Boolean   @default(false)
+  createdAt     DateTime  @default(now())
 
   accounts Account[]
   sessions Session[]
@@ -54,7 +55,7 @@ model User {
 model VerificationToken {
   identifier String
   token      String   @unique
-  expiresAt  DateTime
+  expires    DateTime
 
   @@unique([identifier, token])
 }
@@ -62,7 +63,7 @@ model VerificationToken {
 model Device {
   dongleId        String   @unique @db.VarChar(36)
   pairedUserId    String?
-  nickname        String   @db.VarChar(20) @default("")
+  nickname        String   @default("") @db.VarChar(20)
   imei            String
   serial          String
   deviceType      String
