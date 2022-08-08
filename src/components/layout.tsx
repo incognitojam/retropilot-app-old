@@ -1,5 +1,5 @@
-import RetroPilotFooter from './footer'
-import RetroPilotHeader from './header'
+import RetroPilotFooter from './footer';
+import RetroPilotHeader from './header';
 
 type LayoutProps = {
   children: React.ReactNode,
@@ -16,7 +16,7 @@ const Layout = ({ children }: LayoutProps) => {
       </div>
       <RetroPilotFooter />
     </>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

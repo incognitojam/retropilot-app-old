@@ -1,4 +1,4 @@
-import { Button, Navbar } from 'flowbite-react'
+import { Button, Navbar } from 'flowbite-react';
 
 export default function RetroPilotHeader(): JSX.Element {
   return (
@@ -31,5 +31,5 @@ export default function RetroPilotHeader(): JSX.Element {
         </Navbar.Collapse>
       </Navbar>
     </header>
-  )
+  );
 }

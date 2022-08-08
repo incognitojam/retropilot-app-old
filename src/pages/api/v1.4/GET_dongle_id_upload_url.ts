@@ -3,13 +3,13 @@
     This endpoint only accepts tokens signed with a device private key (openpilot 0.6.3 and newer.)
 */
 
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { sha256 } from 'js-sha256';
 import prisma from '../../../../lib/prisma';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const dongleId = req.query.dongleId as string
-  let path = req.query.path as string
+  const dongleId = req.query.dongleId as string;
+  let path = req.query.path as string;
 
   const device = await prisma.device.findFirst({ where: { dongleId } });
   if (!device) return res.status(404).send('Not found.');
@@ -46,8 +46,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       ,
       ,
       segment,
-      filename
-    ] = <string[]>path.split(/((\d{4})-(\d{2})-(\d{2})--(\d{2})-(\d{2})-(\d{2}))--(\d+)\/(\w+\.bz2)/)
+      filename,
+    ] = <string[]>path.split(/((\d{4})-(\d{2})-(\d{2})--(\d{2})-(\d{2})-(\d{2}))--(\d+)\/(\w+\.bz2)/);
 
     const VALID_FILES = ['fcamera.hevc', 'qcamera.ts', 'dcamera.hevc', 'rlog.bz2', 'qlog.bz2', 'ecamera.hevc'];
     if (VALID_FILES.indexOf(filename) === -1 || Number.isNaN(segment)) {
@@ -80,12 +80,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           segmentCount: parseInt(segment),
           lastUploadAt: new Date(),
         },
-      })
+      });
     }
 
     const existing_segment = await prisma.driveSegment.findFirst({
-      where: { dongleId, segmentNum: parseInt(segment), driveIdentifier }
-    })
+      where: { dongleId, segmentNum: parseInt(segment), driveIdentifier },
+    });
 
     if (!existing_segment) {
       await prisma.driveSegment.create({
@@ -93,14 +93,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           dongleId,
           driveIdentifier,
           segmentNum: parseInt(segment),
-        }
-      })
+        },
+      });
     }
   }
 
-  upload_token = sha256.hmac.create(process.env.APP_SALT as string).update(dongleId + upload_filename + ts).hex()
+  upload_token = sha256.hmac.create(process.env.APP_SALT as string).update(dongleId + upload_filename + ts).hex();
 
   return res.status(200).json({
-    url: `${process.env.BASE_UPLOAD_URL}?filename=${upload_filename}&dir=${upload_directory}&dongleId=${dongleId}&ts=${ts}&token=${upload_token}`
-  })
-}
+    url: `${process.env.BASE_UPLOAD_URL}?filename=${upload_filename}&dir=${upload_directory}&dongleId=${dongleId}&ts=${ts}&token=${upload_token}`,
+  });
+};

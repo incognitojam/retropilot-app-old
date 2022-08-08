@@ -3,7 +3,7 @@
 */
 
 import { randomUUID } from 'crypto';
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { Secret, verify } from '../../../../lib/jwt';
 import prisma from '../../../../lib/prisma';
 
@@ -13,7 +13,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     imei2,
     public_key: publicKey,
     register_token,
-    serial
+    serial,
   } = req.query as { [key: string]: any };
 
   const tokenValidation = await verify(register_token, publicKey as Secret);
@@ -34,9 +34,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         serial,
         deviceType: 'freon',
         publicKey,
-      }
+      },
     });
 
     return res.status(200).json({ dongle_id: device.dongleId, access_token: 'DEPRECATED-BUT-REQUIRED-FOR-07' });
   }
-}
+};

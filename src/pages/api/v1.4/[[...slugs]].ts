@@ -1,6 +1,6 @@
 // GET /v1.4/:dongleId/upload_url/
-import type { NextApiRequest, NextApiResponse } from 'next'
-import GET_dongle_id_upload_url from './GET_dongle_id_upload_url'
+import type { NextApiRequest, NextApiResponse } from 'next';
+import GET_dongle_id_upload_url from './GET_dongle_id_upload_url';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { slugs } = req.query;
@@ -16,4 +16,4 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   return res.status(404).send('Not found.');
-}
+};

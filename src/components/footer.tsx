@@ -1,4 +1,4 @@
-import { Footer } from "flowbite-react";
+import { Footer } from 'flowbite-react';
 
 export default function RetroPilotFooter(): JSX.Element {
   return (
@@ -11,5 +11,5 @@ export default function RetroPilotFooter(): JSX.Element {
         />
       </Footer>
     </div>
-  )
+  );
 }

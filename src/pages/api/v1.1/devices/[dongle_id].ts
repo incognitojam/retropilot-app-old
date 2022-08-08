@@ -27,8 +27,8 @@
     "sim_id"	(string)	Last known sim_id of SIM in device
 */
 
-import type { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../../../../../lib/prisma'
+import type { NextApiRequest, NextApiResponse } from 'next';
+import prisma from '../../../../../lib/prisma';
 
 
 // TODO: user guard and filter by account
@@ -56,9 +56,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       last_gps_speed: 0, // TODO: Speed (m/s) at last location
       last_gps_bearing: 0, // TODO: Direction of last location in degrees from north
       openpilot_version: null, // TODO: Last known openpilot version on device
-      sim_id: null // TODO: Last known sim_id of SIM in device
-    })
+      sim_id: null, // TODO: Last known sim_id of SIM in device
+    });
   } else {
-    return res.status(404).json({ error: 'NotFound' })
+    return res.status(404).json({ error: 'NotFound' });
   }
-}
+};

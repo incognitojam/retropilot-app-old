@@ -1,7 +1,7 @@
-import NextAuth from 'next-auth'
+import NextAuth from 'next-auth';
 
-import EmailProvider from 'next-auth/providers/email'
-import GitHubProvider from 'next-auth/providers/github'
+import EmailProvider from 'next-auth/providers/email';
+import GitHubProvider from 'next-auth/providers/github';
 
 export default NextAuth({
   providers: [
@@ -22,4 +22,4 @@ export default NextAuth({
       clientSecret: process.env.NEXTAUTH_GITHUB_CLIENT_SECRET,
     }),
   ],
-})
+});

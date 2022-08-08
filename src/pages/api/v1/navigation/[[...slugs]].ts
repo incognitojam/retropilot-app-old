@@ -1,5 +1,5 @@
 // POST /v1/:dongleId/upload_urls/
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next';
 import GET_dongle_id_locations from './GET_dongle_id_locations';
 import GET_dongle_id_next from './GET_dongle_id_next';
 import PUT_dongle_id_locations from './PUT_dongle_id_locations';
@@ -28,4 +28,4 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
         break;
     }
   }
-}
+};

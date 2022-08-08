@@ -1,7 +1,10 @@
 {
   "root": true,
-  "extends": "next",
+  "extends": "next/core-web-vitals",
   "rules": {
+    "semi": ["error", "always", { "omitLastInOneLineBlock": true }],
+    "quotes": ["error", "single", { "avoidEscape": true }],
+    "comma-dangle": ["error", "always-multiline"],
     "import/no-anonymous-default-export": "off"
   }
 }
