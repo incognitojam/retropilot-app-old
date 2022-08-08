@@ -5,7 +5,7 @@
 import { randomUUID } from 'crypto';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Secret, verify } from '../../../lib/jwt';
-import prisma from '../../../lib/prisma';
+import prisma from '../../lib/prisma';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const {

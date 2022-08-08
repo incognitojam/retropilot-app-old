@@ -5,17 +5,17 @@
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { sha256 } from 'js-sha256';
-import prisma from '../../../lib/prisma';
+import prisma from '../../../../lib/prisma';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  let { path, dongle_id } = <{ path: string, dongle_id: string }>req.query;
+  const { path, dongleId } = <{ path: string, dongleId: string }>req.query;
 
-  const device = await prisma.devices.findFirst({ where: { dongle_id } });
+  const device = await prisma.device.findFirst({ where: { dongleId } });
   if (!device) return res.status(404).send('Not found.');
 
   const ts = Date.now();
-  const dongle_hash: string = sha256.hmac.create(process.env.APP_SALT as string).update(dongle_id as string).hex();
-  let upload_directory: string = `${dongle_id}/${dongle_hash}/`;
+  const dongle_hash: string = sha256.hmac.create(process.env.APP_SALT as string).update(dongleId as string).hex();
+  let upload_directory: string = `${dongleId}/${dongle_hash}/`;
   let upload_filename: string;
   let upload_token: string;
 
@@ -37,7 +37,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // "2021-04-12--01-44-25--0/qlog.bz2" for example
     const [
       ,
-      drive_identifier,
+      driveIdentifier,
       ,
       ,
       ,
@@ -54,38 +54,36 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(400).send('Malformed Request.');
     }
 
-    const drive_hash: string = sha256.hmac.create(process.env.APP_SALT as string).update(drive_identifier).hex();
+    const drive_hash: string = sha256.hmac.create(process.env.APP_SALT as string).update(driveIdentifier).hex();
 
-    upload_directory += `${drive_hash}/${drive_identifier}/${segment}`;
+    upload_directory += `${drive_hash}/${driveIdentifier}/${segment}`;
     upload_filename = filename;
 
-    const existing_drive = await prisma.drives.findFirst({ where: { dongle_id, identifier: drive_identifier } });
+    const existing_drive = await prisma.drive.findFirst({ where: { dongleId, identifier: driveIdentifier } });
 
     if (existing_drive) {
-      await prisma.drives.update({
-        where: { id: existing_drive.id },
+      await prisma.drive.update({
+        where: { dongleId, identifier: driveIdentifier },
         data: {
-          max_segment: Math.max(existing_drive.max_segment ?? 0, parseInt(segment)),
+          segmentCount: Math.max(existing_drive.segmentCount ?? 0, parseInt(segment)),
           upload_complete: false,
           is_processed: false,
           last_upload: Date.now(),
-        }
+        },
       });
     } else {
-      await prisma.drives.create({
+      await prisma.drive.create({
         data: {
-          dongle_id,
-          identifier: drive_identifier,
-          max_segment: parseInt(segment),
-          upload_complete: false,
-          is_processed: false,
-          last_upload: Date.now(),
-        }
+          dongleId,
+          identifier: driveIdentifier,
+          segmentCount: parseInt(segment),
+          lastUploadAt: new Date(),
+        },
       })
     }
 
-    const existing_segment = await prisma.drive_segments.findFirst({
-      where: { dongle_id, segment_id: parseInt(segment), drive_identifier }
+    const existing_segment = await prisma.driveSegment.findFirst({
+      where: { dongleId, segmentNum: parseInt(segment), driveIdentifier }
     })
 
     if (!existing_segment) {
