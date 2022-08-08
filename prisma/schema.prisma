@@ -104,8 +104,8 @@ model DriveSegment {
 }
 
 model Drive {
-  identifier String @db.VarChar(20)
   dongleId   String @db.VarChar(36)
+  identifier String @db.VarChar(20)
 
   // Processed drive data
   segmentCount    Int?
@@ -126,5 +126,5 @@ model Drive {
   device   Device?        @relation(fields: [dongleId], references: [dongleId], onDelete: Restrict)
   segments DriveSegment[]
 
-  @@id([identifier, dongleId])
+  @@id([dongleId, identifier])
 }
