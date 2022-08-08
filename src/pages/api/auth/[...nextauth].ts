@@ -20,7 +20,6 @@ export const authOptions: NextAuthOptions = {
       server: {
         host: getEnv('NEXTAUTH_EMAIL_HOST'),
         port: getEnv('NEXTAUTH_EMAIL_PORT'),
-        secure: getEnv('NEXTAUTH_EMAIL_SECURE'),
         auth: {
           user: getEnv('NEXTAUTH_EMAIL_AUTH_USER'),
           pass: getEnv('NEXTAUTH_EMAIL_AUTH_PASS'),
