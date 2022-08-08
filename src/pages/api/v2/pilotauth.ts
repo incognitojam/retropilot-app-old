@@ -4,42 +4,39 @@
 
 import { randomUUID } from 'crypto';
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Secret, verify } from '../../../lib/jwt';
-import prisma from '../../lib/prisma';
+import { Secret, verify } from '../../../../lib/jwt';
+import prisma from '../../../../lib/prisma';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const {
     imei,
     imei2,
-    public_key,
+    public_key: publicKey,
     register_token,
     serial
   } = req.query as { [key: string]: any };
 
-  const tokenValidation = await verify(register_token, public_key as Secret);
+  const tokenValidation = await verify(register_token, publicKey as Secret);
 
   if (!tokenValidation || !imei || !serial) {
     return res.status(400).send('Invalid JWT.');
   }
 
-  const existingDevice = await prisma.devices.findFirst({ where: { serial } });
+  const existingDevice = await prisma.device.findFirst({ where: { serial } });
 
   if (existingDevice) {
-    return res.status(200).json({ first_pair: false, dongle_id: existingDevice.dongle_id });
+    return res.status(200).json({ first_pair: false, dongleId: existingDevice.dongleId });
   } else {
-    const device = await prisma.devices.create({
+    const device = await prisma.device.create({
       data: {
-        dongle_id: randomUUID(),
+        dongleId: randomUUID(),
         imei,
         serial,
-        device_type: 'freon',
-        public_key,
-        created: Date.now(),
-        last_ping: Date.now(),
-        storage_used: 0,
+        deviceType: 'freon',
+        publicKey,
       }
     });
 
-    return res.status(200).json({ dongle_id: device.dongle_id, access_token: 'DEPRECATED-BUT-REQUIRED-FOR-07' });
+    return res.status(200).json({ dongle_id: device.dongleId, access_token: 'DEPRECATED-BUT-REQUIRED-FOR-07' });
   }
 }

@@ -1,11 +1,11 @@
-//GET /v1/devices/:dongle_id/location
-//POST /v1/devices/:dongle_id/unpair
-//POST /v1/devices/:dongle_id/add_user
-//POST /v1/devices/:dongle_id/del_user
-//GET /v1/devices/:dongle_id/users
-//GET /v1/devices/:dongle_id/bootlogs
-//GET /v1/devices/:dongle_id/crashlogs
-//GET /v1/devices/:dongle_id/segments
+//GET /v1/devices/:dongleId/location
+//POST /v1/devices/:dongleId/unpair
+//POST /v1/devices/:dongleId/add_user
+//POST /v1/devices/:dongleId/del_user
+//GET /v1/devices/:dongleId/users
+//GET /v1/devices/:dongleId/bootlogs
+//GET /v1/devices/:dongleId/crashlogs
+//GET /v1/devices/:dongleId/segments
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 import GET_dongle_id_bootlogs from './GET_dongle_id_bootlogs';
@@ -19,7 +19,7 @@ import POST_dongle_id_unpair from './POST_dongle_id_unpair';
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
   const { slugs } = req.query;
-  req.query = { ...req.query, dongle_id: slugs?.[0] };
+  req.query = { ...req.query, dongleId: slugs?.[0] };
 
   const switchCase = slugs?.[1];
 

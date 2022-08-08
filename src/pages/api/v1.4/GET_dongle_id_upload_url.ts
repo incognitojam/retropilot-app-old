@@ -8,7 +8,8 @@ import { sha256 } from 'js-sha256';
 import prisma from '../../../../lib/prisma';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { path, dongleId } = <{ path: string, dongleId: string }>req.query;
+  const dongleId = req.query.dongleId as string
+  let path = req.query.path as string
 
   const device = await prisma.device.findFirst({ where: { dongleId } });
   if (!device) return res.status(404).send('Not found.');
@@ -63,12 +64,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (existing_drive) {
       await prisma.drive.update({
-        where: { dongleId, identifier: driveIdentifier },
+        where: { dongleId_identifier: {dongleId, identifier: driveIdentifier} },
         data: {
           segmentCount: Math.max(existing_drive.segmentCount ?? 0, parseInt(segment)),
-          upload_complete: false,
-          is_processed: false,
-          last_upload: Date.now(),
+          uploadCompletedAt: null,
+          processedAt: null,
+          lastUploadAt: new Date(),
         },
       });
     } else {
@@ -87,24 +88,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     })
 
     if (!existing_segment) {
-      await prisma.drive_segments.create({
+      await prisma.driveSegment.create({
         data: {
-          dongle_id,
-          drive_identifier,
-          segment_id: parseInt(segment),
-          duration: 0,
-          distance_meters: 0,
-          upload_complete: false,
-          is_processed: false,
-          is_stalled: false,
+          dongleId,
+          driveIdentifier,
+          segmentNum: parseInt(segment),
         }
       })
     }
   }
 
-  upload_token = sha256.hmac.create(process.env.APP_SALT as string).update(dongle_id + upload_filename + ts).hex()
+  upload_token = sha256.hmac.create(process.env.APP_SALT as string).update(dongleId + upload_filename + ts).hex()
 
   return res.status(200).json({
-    url: `${process.env.BASE_UPLOAD_URL}?filename=${upload_filename}&dir=${upload_directory}&dongle_id=${dongle_id}&ts=${ts}&token=${upload_token}`
+    url: `${process.env.BASE_UPLOAD_URL}?filename=${upload_filename}&dir=${upload_directory}&dongleId=${dongleId}&ts=${ts}&token=${upload_token}`
   })
 }

@@ -4,7 +4,7 @@
     Response
 
     Key	Type	Description
-    "dongle_id"	(string)	see Dongle ID
+    "dongleId"	(string)	see Dongle ID
     "alias"	(string)	Globally unique device nickname
     "serial"	(string)	Device serial
     "athena_host"	(string)	Last connected athena server
@@ -33,7 +33,7 @@ import prisma from '../../../../../lib/prisma'
 
 // TODO: user guard and filter by account
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const device = await prisma.device.findFirst({ where: { dongleId: req.query.dongle_id as string } });
+  const device = await prisma.device.findFirst({ where: { dongleId: req.query.dongleId as string } });
   if (device) {
     return res.status(200).json({
       dongle_id: device.dongleId,

@@ -67,13 +67,13 @@ model Device {
   serial          String?
   deviceType      String?
   publicKey       String?
-  storageUsage    Int?
+  storageUsage    Int      @default(0)
   maxStorageUsage Int?
   ignoringUploads Boolean?
 
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  lastPingAt DateTime
+  lastPingAt DateTime @default(now())
 
   user          User?          @relation(fields: [pairedUserId], references: [id], onDelete: SetNull)
   driveSegments DriveSegment[]
