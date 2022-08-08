@@ -62,11 +62,11 @@ model VerificationToken {
 model Device {
   dongleId        String   @unique @db.VarChar(36)
   pairedUserId    String?
-  nickname        String?  @db.VarChar(20)
-  imei            String?
-  serial          String?
-  deviceType      String?
-  publicKey       String?
+  nickname        String   @db.VarChar(20)
+  imei            String
+  serial          String
+  deviceType      String
+  publicKey       String
   storageUsage    Int      @default(0)
   maxStorageUsage Int?
   ignoringUploads Boolean?
