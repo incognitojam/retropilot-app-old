@@ -32,7 +32,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const existingDevice = await prisma.device.findFirst({ where: { serial } });
 
   if (existingDevice) {
-    return res.status(200).json({ first_pair: false, dongleId: existingDevice.dongleId });
+    return res.status(200).json({ first_pair: false, dongle_id: existingDevice.dongleId });
   } else {
     const device = await prisma.device.create({
       data: {
