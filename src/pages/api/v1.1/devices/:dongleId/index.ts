@@ -8,7 +8,7 @@ import prisma from '../../../../../lib/prisma';
  *
  * Returns an object representing a comma device.
 */
-export default async (req: NextApiRequest, res: NextApiResponse<Api.Device>) => {
+export default async (req: NextApiRequest, res: NextApiResponse<Api.Response<Api.Device>>) => {
   // TODO: user guard and filter by account
   const device = await prisma.device.findFirst({ where: { dongleId: req.query.dongleId as string } });
   if (!device) {

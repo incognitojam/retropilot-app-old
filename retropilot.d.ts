@@ -19,6 +19,14 @@ type RouteName = `${DongleID}|${number}-${number}-${number}--${number}-${number}
 type SegmentName = `${Route}--${number}`;
 
 namespace Api {
+  type ErrorResponse = {
+    error: string;
+    message: string;
+    statusCode: number;
+  };
+
+  type Response<T> = T | ErrorResponse;
+
   enum PrimeType {
     None = 0,
     Magenta = 1,
