@@ -1,7 +1,7 @@
 import { randomUUID } from 'crypto';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { Secret, verify } from '../../../../lib/jwt';
-import prisma from '../../../../lib/prisma';
+import { Secret, verify } from '../../../lib/jwt';
+import prisma from '../../../lib/prisma';
 
 /**
  * POST /v2/pilotauth

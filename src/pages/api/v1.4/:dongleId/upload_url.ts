@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { sha256 } from 'js-sha256';
-import prisma from '../../../../../lib/prisma';
+import prisma from '../../../../lib/prisma';
 
 /**
  * GET /v1.4/:dongleId/upload_url
