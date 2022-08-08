@@ -21,6 +21,6 @@ export default async (req: NextApiRequest, res: NextApiResponse<Api.Response<Api
     serial: device.serial,
     is_paired: device.pairedUserId !== null,
     public_key: device.publicKey,
-    prime_type: 0, // TODO: Prime type: 0: no prime, 1: standard prime, 2: prime lite
+    prime_type: Api.PrimeType.None,
   });
 };
