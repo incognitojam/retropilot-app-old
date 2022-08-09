@@ -1,3 +1,22 @@
+namespace NodeJS {
+  interface ProcessEnv {
+    DATABASE_URL?: string;
+    SHADOW_DATABASE_URL?: string;
+
+    NEXTAUTH_URL?: string;
+    NEXTAUTH_SECRET?: string;
+
+    NEXTAUTH_EMAIL_SERVER_USER?: string;
+    NEXTAUTH_EMAIL_SERVER_PASSWORD?: string;
+    NEXTAUTH_EMAIL_SERVER_HOST?: string;
+    NEXTAUTH_EMAIL_SERVER_PORT?: string;
+    NEXTAUTH_EMAIL_FROM?: string;
+
+    NEXTAUTH_GITHUB_CLIENT_ID?: string;
+    NEXTAUTH_GITHUB_CLIENT_SECRET?: string;
+  }
+}
+
 // A dongle ID is an 16-character alphanumeric device identifier. Each comma device has a unique dongle ID.
 type DongleID = string;
 

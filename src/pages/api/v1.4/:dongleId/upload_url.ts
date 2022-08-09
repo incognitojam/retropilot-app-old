@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { sha256 } from 'js-sha256';
+import config from '../../../../lib/config';
 import prisma from '../../../../lib/prisma';
 
 type UploadUrlResponse = {
@@ -127,6 +128,6 @@ export default async (req: NextApiRequest, res: NextApiResponse<Api.Response<Upl
   upload_token = sha256.hmac.create(process.env.APP_SALT as string).update(dongleId + upload_filename + ts).hex();
 
   res.json({
-    url: `${process.env.BASE_UPLOAD_URL}?filename=${upload_filename}&dir=${upload_directory}&dongleId=${dongleId}&ts=${ts}&token=${upload_token}`,
+    url: `${config.baseUrl}/api/?filename=${upload_filename}&dir=${upload_directory}&dongleId=${dongleId}&ts=${ts}&token=${upload_token}`,
   });
 };
