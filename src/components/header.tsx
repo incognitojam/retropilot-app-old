@@ -41,10 +41,10 @@ function UserDropdown(props: UserDropdownProps): JSX.Element {
           {user.email}
         </span>
       </Dropdown.Header>
-      <Dropdown.Item>
+      <Dropdown.Item onClick={() => router.push('/dashboard')}>
         Dashboard
       </Dropdown.Item>
-      <Dropdown.Item>
+      <Dropdown.Item onClick={() => router.push('/settings')}>
         Settings
       </Dropdown.Item>
       <Dropdown.Divider />

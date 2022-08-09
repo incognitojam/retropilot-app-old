@@ -1,24 +1,7 @@
-import Head from 'next/head';
 import React from 'react';
-
 import Layout from '../components/layout';
 
-export default function Index(): JSX.Element {
-  return (
-    <>
-      <Head>
-        <title>RetroPilot</title>
-        <meta name="description" content="RetroPilot" />
-        <link rel="icon" href="/favicon.png" />
-      </Head>
-      <Layout>
-        <HomePage />
-      </Layout>
-    </>
-  );
-}
-
-function HomePage(): JSX.Element {
+export default function HomePage(): JSX.Element {
   return (
     <>
       <section>
@@ -38,3 +21,7 @@ function HomePage(): JSX.Element {
     </>
   );
 }
+
+HomePage.getLayout = (page: React.ReactNode) => (
+  <Layout>{page}</Layout>
+);
