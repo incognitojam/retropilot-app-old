@@ -1,11 +1,14 @@
+import { Device } from '@prisma/client';
 import { Button, Card } from 'flowbite-react';
 import { GetServerSideProps } from 'next';
-import { Session, unstable_getServerSession } from 'next-auth';
+import { unstable_getServerSession } from 'next-auth';
 import Layout from '../components/layout';
+import prisma from '../lib/prisma';
 import { authOptions } from './api/auth/[...nextauth]';
+import { Page } from './_app';
 
-type DashboardPageProps = {
-  session: Session;
+type Props = {
+  devices: Device[];
 };
 
 /**
@@ -13,8 +16,7 @@ type DashboardPageProps = {
  *
  * Pair and view your paired devices.
  */
-export default function DashboardPage(props: DashboardPageProps): JSX.Element {
-  // TODO: implement device list
+const DashboardPage: Page<Props> = ({ devices }) => {
   return (
     <>
       <h1 className="mb-6 text-5xl font-extrabold">
@@ -42,13 +44,13 @@ export default function DashboardPage(props: DashboardPageProps): JSX.Element {
       </section>
     </>
   );
-}
+};
 
 DashboardPage.getLayout = (page: React.ReactNode) => (
   <Layout title="Dashboard">{page}</Layout>
 );
 
-export const getServerSideProps: GetServerSideProps<DashboardPageProps> = async (context) => {
+export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
   const session = await unstable_getServerSession(context.req, context.res, authOptions);
 
   if (!session) {
@@ -60,9 +62,15 @@ export const getServerSideProps: GetServerSideProps<DashboardPageProps> = async 
     };
   }
 
+  const devices = await prisma.device.findMany({
+    where: { pairedUserId: session.id },
+  });
+
   return {
     props: {
-      session,
+      devices,
     },
   };
 };
+
+export default DashboardPage;
