@@ -51,8 +51,6 @@ export default async (req: NextApiRequest, res: NextApiResponse<Api.Response<Upl
       path = `boot/${chunks[0]}--${chunks[1]}.bz2`;
     }
 
-    console.log('Upload url for boot file');
-
     // TODO, allow multiple types
     const upload_type = path.indexOf('boot/') === 0 ? 'boot' : 'crash';
 
