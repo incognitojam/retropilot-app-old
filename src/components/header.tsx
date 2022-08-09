@@ -1,6 +1,9 @@
 import { Button, Navbar } from 'flowbite-react';
+import { useSession } from 'next-auth/react';
 
 export default function RetroPilotHeader(): JSX.Element {
+  const { data: session, status } = useSession();
+
   return (
     <header className="sticky top-0 z-20">
       <Navbar fluid>
@@ -10,9 +13,15 @@ export default function RetroPilotHeader(): JSX.Element {
           </span>
         </Navbar.Brand>
         <div className="flex md:order-2">
-          <Button>
-            Get started
-          </Button>
+          {status === 'authenticated' && (
+            <Button href="/api/auth/signout">
+              Sign out
+            </Button>
+          ) || (
+            <Button href="/api/auth/signin">
+              Sign in
+            </Button>
+          )}
           <Navbar.Toggle />
         </div>
         <Navbar.Collapse>
