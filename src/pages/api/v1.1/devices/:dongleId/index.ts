@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '../../../../../lib/prisma';
 import { Secret, verify } from '../../../../../lib/jwt';
+import prisma from '../../../../../lib/prisma';
 
 /**
  * GET /v1.1/devices/:dongleId
