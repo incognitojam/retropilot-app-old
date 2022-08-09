@@ -12,7 +12,11 @@ export default async (req: NextApiRequest, res: NextApiResponse<Api.Response<Api
   // TODO: user guard and filter by account
   const device = await prisma.device.findFirst({ where: { dongleId: req.query.dongleId as string } });
   if (!device) {
-    res.status(404).end('Not Found');
+    res.status(404).json({
+      code: 404,
+      error: 'Not Found',
+      details: 'Device not found',
+    });
     return;
   }
 

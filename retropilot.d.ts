@@ -20,9 +20,9 @@ type SegmentName = `${Route}--${number}`;
 
 namespace Api {
   type ErrorResponse = {
+    code: number;
     error: string;
-    message: string;
-    statusCode: number;
+    details?: string;
   };
 
   type Response<T> = T | ErrorResponse;

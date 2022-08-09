@@ -7,7 +7,9 @@ import type { NextApiRequest, NextApiResponse } from 'next';
  *
  * Fetch messages stored for delivery once device comes online.
  */
-export default (req: NextApiRequest, res: NextApiResponse) => {
-  // TODO: implement
-  res.status(501).end('Not Implemented');
+export default (req: NextApiRequest, res: NextApiResponse<Api.ErrorResponse>) => {
+  res.status(501).json({
+    code: 501,
+    error: 'Not Implemented',
+  });
 };

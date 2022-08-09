@@ -7,9 +7,11 @@ import type { NextApiRequest, NextApiResponse } from 'next';
  *
  * Retrieve saved locations from database.
  */
-const get = (req: NextApiRequest, res: NextApiResponse) => {
-  // TODO: implement
-  res.status(501).end('Not Implemented');
+const get = (req: NextApiRequest, res: NextApiResponse<Api.ErrorResponse>) => {
+  res.status(501).json({
+    code: 501,
+    error: 'Not Implemented',
+  });
 };
 
 /**
@@ -19,9 +21,11 @@ const get = (req: NextApiRequest, res: NextApiResponse) => {
  *
  * Save new location in database.
  */
-const put = (req: NextApiRequest, res: NextApiResponse) => {
-  // TODO: implement
-  res.status(501).end('Not Implemented');
+const put = (req: NextApiRequest, res: NextApiResponse<Api.ErrorResponse>) => {
+  res.status(501).json({
+    code: 501,
+    error: 'Not Implemented',
+  });
 };
 
 /**
@@ -32,9 +36,11 @@ const put = (req: NextApiRequest, res: NextApiResponse) => {
  *
  * Update or delete existing saved location in database.
  */
-const patch = (req: NextApiRequest, res: NextApiResponse) => {
-  // TODO: implement
-  res.status(501).end('Not Implemented');
+const patch = (req: NextApiRequest, res: NextApiResponse<Api.ErrorResponse>) => {
+  res.status(501).json({
+    code: 501,
+    error: 'Not Implemented',
+  });
 };
 
 
@@ -53,6 +59,10 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
       break;
     default:
       res.setHeader('Allow', ['GET', 'PUT', 'PATCH', 'DELETE']);
-      res.status(405).end(`Method ${req.method} Not Allowed`);
+      res.status(405).json({
+        code: 405,
+        error: 'Method Not Allowed',
+        details: `This endpoint does not support ${req.method} requests.`,
+      });
   }
 };

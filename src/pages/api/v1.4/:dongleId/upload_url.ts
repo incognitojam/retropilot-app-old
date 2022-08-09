@@ -2,6 +2,10 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { sha256 } from 'js-sha256';
 import prisma from '../../../../lib/prisma';
 
+type UploadUrlResponse = {
+  url: string;
+};
+
 /**
  * GET /v1.4/:dongleId/upload_url
  *
@@ -10,10 +14,14 @@ import prisma from '../../../../lib/prisma';
  * Request a URL to which an openpilot file can be uploaded via PUT request. This endpoint only
  * accepts tokens signed with a device private key. (openpilot 0.6.3 and newer.)
  */
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default async (req: NextApiRequest, res: NextApiResponse<Api.Response<UploadUrlResponse>>) => {
   if (req.method !== 'GET') {
     res.setHeader('Allow', ['GET']);
-    res.status(405).end('Method Not Allowed');
+    res.status(405).json({
+      code: 405,
+      error: 'Method Not Allowed',
+      details: `This endpoint does not support ${req.method} requests.`,
+    });
     return;
   }
 
@@ -22,7 +30,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const device = await prisma.device.findFirst({ where: { dongleId } });
   if (!device) {
-    res.status(404).end('Not Found');
+    res.status(404).json({
+      code: 404,
+      error: 'Not Found',
+      details: 'Device not found',
+    });
     return;
   }
 
@@ -64,7 +76,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const VALID_FILES = ['fcamera.hevc', 'qcamera.ts', 'dcamera.hevc', 'rlog.bz2', 'qlog.bz2', 'ecamera.hevc'];
     if (VALID_FILES.indexOf(filename) === -1 || Number.isNaN(segment)) {
       console.error(filename, segment, VALID_FILES.indexOf(filename) === -1, Number.isNaN(segment));
-      res.status(400).send('Bad Request');
+      res.status(400).json({
+        code: 400,
+        error: 'Bad Request',
+      });
       return;
     }
 

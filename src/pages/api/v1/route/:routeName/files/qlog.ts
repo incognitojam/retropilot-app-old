@@ -7,7 +7,9 @@ import type { NextApiRequest, NextApiResponse } from 'next';
  *
  * Retrieve uploaded qlogs for a route.
  */
-export default (req: NextApiRequest, res: NextApiResponse) => {
-  // TODO: implement
-  res.status(501).end('Not Implemented');
+export default (req: NextApiRequest, res: NextApiResponse<Api.ErrorResponse>) => {
+  res.status(501).json({
+    code: 501,
+    error: 'Not Implemented',
+  });
 };

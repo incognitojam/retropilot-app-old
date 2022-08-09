@@ -11,7 +11,10 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
       break;
     default:
       res.setHeader('Allow', ['GET', 'PATCH']);
-      res.status(405).end(`Method ${req.method} Not Allowed`);
+      res.status(405).json({
+        error: 'Method Not Allowed',
+        details: `This endpoint does not support ${req.method} requests.`,
+      });
   }
 };
 
@@ -33,7 +36,9 @@ const get = (req: NextApiRequest, res: NextApiResponse) => {
  *
  * Update device `alias`.
  */
-const patch = (req: NextApiRequest, res: NextApiResponse) => {
-  // TODO: implement
-  res.status(501).end('Not Implemented');
+const patch = (req: NextApiRequest, res: NextApiResponse<Api.ErrorResponse>) => {
+  res.status(501).json({
+    code: 501,
+    error: 'Not Implemented',
+  });
 };
