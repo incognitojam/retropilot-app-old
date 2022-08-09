@@ -1,5 +1,61 @@
-import { Button, Navbar } from 'flowbite-react';
+import { Avatar, Button, Dropdown, Navbar } from 'flowbite-react';
+import { DefaultSession } from 'next-auth';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+
+type NextAuthUser = NonNullable<DefaultSession['user']>;
+
+type UserDropdownProps = {
+  user: NextAuthUser,
+};
+
+function UserDropdown(props: UserDropdownProps): JSX.Element {
+  const { user } = props;
+  const router = useRouter();
+
+  const avatar = (
+    <Avatar
+      alt="User settings"
+      img={user.image ?? undefined}
+      rounded={true}
+    >
+      <div className="space-y-1 font-medium dark:text-white">
+        <div>
+          {user.name}
+        </div>
+      </div>
+    </Avatar>
+  );
+
+  return (
+    <Dropdown
+      label={avatar}
+      arrowIcon={false}
+      inline={true}
+    >
+      <Dropdown.Header>
+        <span className="block text-sm">
+          {user.name}
+        </span>
+        <span className="block truncate text-sm font-medium">
+          {user.email}
+        </span>
+      </Dropdown.Header>
+      <Dropdown.Item>
+        Dashboard
+      </Dropdown.Item>
+      <Dropdown.Item>
+        Settings
+      </Dropdown.Item>
+      <Dropdown.Divider />
+      <Dropdown.Item onClick={() => router.push('/api/auth/signout')}>
+        <span className='text-red-500'>
+          Sign out
+        </span>
+      </Dropdown.Item>
+    </Dropdown>
+  );
+}
 
 export default function RetroPilotHeader(): JSX.Element {
   const { data: session, status } = useSession();
@@ -13,10 +69,8 @@ export default function RetroPilotHeader(): JSX.Element {
           </span>
         </Navbar.Brand>
         <div className="flex md:order-2">
-          {status === 'authenticated' && (
-            <Button href="/api/auth/signout">
-              Sign out
-            </Button>
+          {status === 'authenticated' && session?.user && (
+            <UserDropdown user={session.user} />
           ) || (
             <Button href="/api/auth/signin">
               Sign in
