@@ -47,6 +47,37 @@ const DashboardMap: NextComponentType<NextPageContext, {}, Props> = ({ locations
     });
   });
 
+  const markers = useRef<Map<string, mapboxgl.Marker>>(new Map());
+
+  useEffect(() => {
+    if (!map.current) {
+      markers.current.clear();
+      return;
+    }
+
+    // Check that all markers are on the map
+    const allMarkers = new Set(markers.current.keys());
+    for (const { id, lat, lng } of locations) {
+      if (id in allMarkers) {
+        // Skip locations that are already on the map
+        allMarkers.delete(id);
+        continue;
+      }
+
+      // Add location marker to the map
+      const marker = new mapboxgl.Marker()
+        .setLngLat({ lng, lat })
+        .addTo(map.current);
+      markers.current.set(id, marker);
+    }
+
+    // Remove any markers that are no longer in the locations array
+    allMarkers.forEach((id) => {
+      markers.current.get(id)!.remove();
+      markers.current.delete(id);
+    });
+  }, [map, locations, markers]);
+
   return (
     <div>
       <div className="map-container">

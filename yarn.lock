@@ -948,6 +948,13 @@ cookie@^0.4.1:
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.4.2.tgz#0e41f24de5ecf317947c82fc789e06a884824432"
   integrity sha512-aSWTXFzaKWkvHO1Ny/s+ePFpvKsPnjc551iI41v3ny/ow6tBG5Vd+FuqGNhh1LxOmVzOlGUriIlOaokOvhaStA==
 
+copy-anything@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/copy-anything/-/copy-anything-3.0.2.tgz#7189171ff5e1893b2287e8bf574b8cd448ed50b1"
+  integrity sha512-CzATjGXzUQ0EvuvgOCI6A4BGOo2bcVx8B+eC2nF862iv9fopnPQwlrbACakNCHRIJbCSBj+J/9JeDf60k64MkA==
+  dependencies:
+    is-what "^4.1.6"
+
 core-js-pure@^3.20.2:
   version "3.23.3"
   resolved "https://registry.npmjs.org/core-js-pure/-/core-js-pure-3.23.3.tgz"
@@ -1815,6 +1822,13 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
+hoist-non-react-statics@^3.3.2:
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
+  integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
+  dependencies:
+    react-is "^16.7.0"
+
 homedir-polyfill@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/homedir-polyfill/-/homedir-polyfill-1.0.3.tgz#743298cef4e5af3e194161fbadcc2151d3a058e8"
@@ -2030,6 +2044,11 @@ is-weakref@^1.0.2:
   integrity sha512-qctsuLZmIQ0+vSSMfoVvyFe2+GSEvnmZ2ezTup1SBse9+twCCeial6EEi3Nc2KFcf6+qz2FBPnjXsk8xhKSaPQ==
   dependencies:
     call-bind "^1.0.2"
+
+is-what@^4.1.6:
+  version "4.1.7"
+  resolved "https://registry.yarnpkg.com/is-what/-/is-what-4.1.7.tgz#c41dc1d2d2d6a9285c624c2505f61849c8b1f9cc"
+  integrity sha512-DBVOQNiPKnGMxRMLIYSwERAS5MVY1B7xYiGnpgctsOFvVDz9f9PFXXxMcTOHuoqYp4NK9qFYQaIC1NRRxLMpBQ==
 
 is-windows@^1.0.1:
   version "1.0.2"
@@ -2431,6 +2450,13 @@ next-auth@^4.10.3:
     preact "^10.6.3"
     preact-render-to-string "^5.1.19"
     uuid "^8.3.2"
+
+next-superjson-plugin@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/next-superjson-plugin/-/next-superjson-plugin-0.2.0.tgz#69706897458e963713dd6e48aec58ff98e8be245"
+  integrity sha512-lYaGzMdkgXWMYl/t8UwkoEtLfLn8I3guis6T7/B+0az5PTTS30xsasK+25LgXBSomQoW12hL7O65Z+IBNWpCXg==
+  dependencies:
+    hoist-non-react-statics "^3.3.2"
 
 next@12.2.4:
   version "12.2.4"
@@ -2879,7 +2905,7 @@ react-indiana-drag-scroll@^2.1.0:
     debounce "^1.2.0"
     easy-bem "^1.1.1"
 
-react-is@^16.13.1:
+react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
@@ -3213,6 +3239,13 @@ supercluster@^7.1.4:
   integrity sha512-EulshI3pGUM66o6ZdH3ReiFcvHpM3vAigyK+vcxdjpJyEbIIrtbmBdY23mGgnI24uXiGFvrGq9Gkum/8U7vJWg==
   dependencies:
     kdbush "^3.0.0"
+
+superjson@^1.9.1:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/superjson/-/superjson-1.9.1.tgz#e23bd2e8cf0f4ade131d6d769754cac7eaa8ab34"
+  integrity sha512-oT3HA2nPKlU1+5taFgz/HDy+GEaY+CWEbLzaRJVD4gZ7zMVVC4GDNFdgvAZt6/VuIk6D2R7RtPAiCHwmdzlMmg==
+  dependencies:
+    copy-anything "^3.0.2"
 
 supports-color@^5.3.0:
   version "5.5.0"
