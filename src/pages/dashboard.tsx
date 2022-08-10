@@ -11,6 +11,8 @@ import dynamic from 'next/dynamic';
 import { DashboardMapLocation } from '../components/dashboard/DashboardMap';
 import DeviceCard from '../components/dashboard/DeviceCard';
 import { createMockDevice } from '../lib/mock';
+import { useState } from 'react';
+import PairDeviceModal from '../components/dashboard/PairDeviceModal';
 
 type Props = {
   devices: Device[];
@@ -28,6 +30,11 @@ const DashboardPage: Page<Props> = ({ devices, locations }) => {
     ssr: false,
   });
 
+  const [pairingModal, setPairingModal] = useState(false);
+  const openPairingModal = () => {
+    setPairingModal(true);
+  };
+
   return (
     <>
       <div className="flex justify-between items-center mb-4">
@@ -35,7 +42,7 @@ const DashboardPage: Page<Props> = ({ devices, locations }) => {
           🗺️ Dashboard
         </h1>
 
-        <Button>
+        <Button onClick={openPairingModal}>
           Pair new device
         </Button>
       </div>
@@ -48,6 +55,10 @@ const DashboardPage: Page<Props> = ({ devices, locations }) => {
           ))}
         </div>
       </div>
+      <PairDeviceModal
+        show={pairingModal}
+        onClose={() => setPairingModal(false)}
+      />
     </>
   );
 };
