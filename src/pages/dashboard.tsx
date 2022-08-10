@@ -30,29 +30,22 @@ const DashboardPage: Page<Props> = ({ devices, locations }) => {
 
   return (
     <>
-      <h1 className="mb-6 text-5xl font-extrabold">
-        🗺️ Dashboard
-      </h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-5xl font-extrabold">
+          🗺️ Dashboard
+        </h1>
+
+        <Button>
+          Pair new device
+        </Button>
+      </div>
       <div className="relative left-0">
         <DashboardMap locations={locations} />
 
-        <div className="absolute top-4 bottom-4 z-10 grid justify-between">
-          <div className="grid gap-2 align-start">
-            {devices.map((device) => (
-              <DeviceCard key={device.dongleId} device={device} />
-            ))}
-          </div>
-
-          <div className="self-end">
-            <Card>
-              <h2 className="text-2xl font-bold">
-                Pair new device
-              </h2>
-              <Button>
-                Pair
-              </Button>
-            </Card>
-          </div>
+        <div className="absolute top-4 bottom-4 h-fill z-10 grid gap-2 content-start">
+          {devices.map((device) => (
+            <DeviceCard key={device.dongleId} device={device} />
+          ))}
         </div>
       </div>
     </>
@@ -79,7 +72,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
   //   where: { pairedUserId: session.id },
   // });
 
-  const devices = [createMockDevice()];
+  const devices = [
+    createMockDevice(),
+    createMockDevice(),
+  ];
 
   const locations = devices.map(({ dongleId }) => {
     return {

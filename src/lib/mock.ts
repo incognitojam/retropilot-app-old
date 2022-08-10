@@ -1,7 +1,11 @@
 import { Device } from '@prisma/client';
 
+const randomHex = (length: number): string => {
+  return [...Array(length)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
+};
+
 export const createMockDevice = () => ({
-  dongleId: 'abc123',
+  dongleId: randomHex(6),
   pairedUserId: null,
   nickname: 'My comma three',
   imei: '123456789012345',
