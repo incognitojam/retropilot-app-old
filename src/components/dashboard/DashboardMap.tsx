@@ -34,6 +34,13 @@ const DashboardMap: NextComponentType<NextPageContext, {}, Props> = ({ locations
       center: { lng, lat },
       zoom,
     });
+
+    map.current.addControl(new mapboxgl.ScaleControl());
+    map.current.addControl(new mapboxgl.GeolocateControl({
+      fitBoundsOptions: {
+        maxZoom: 13,
+      },
+    }));
   }, [map, mapContainer]);
 
   useEffect(() => {
