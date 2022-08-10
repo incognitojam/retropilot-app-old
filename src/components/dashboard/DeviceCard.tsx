@@ -8,21 +8,23 @@ type Props = {
 
 const DeviceCard: NextComponentType<NextPageContext, {}, Props> = ({ device }) => {
   return (
-    <Card>
-      <div className="flex justify-between">
-        <div>
-          <div className="text-3xl font-bold">
-            Dongle <pre className="inline">{device.dongleId}</pre>
+    <div className="hover:shadow-xl transition-shadow">
+      <Card>
+        <div className="flex justify-between">
+          <div>
+            <div className="text-3xl font-bold">
+              Dongle <pre className="inline">{device.dongleId}</pre>
+            </div>
+            <div className="text-md">
+              <pre className="inline">{device.nickname}</pre>
+            </div>
           </div>
-          <div className="text-md">
-            <pre className="inline">{device.nickname}</pre>
-          </div>
+          <Badge color="success" style={{ marginLeft: 12 }}>
+            Online
+          </Badge>
         </div>
-        <Badge color="success" style={{ marginLeft: 12 }}>
-          Online
-        </Badge>
-      </div>
-    </Card>
+      </Card>
+    </div>
   );
 };
 
