@@ -1,17 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
 import { Device } from '@prisma/client';
 import { Button, Card } from 'flowbite-react';
 import { GetServerSideProps } from 'next';
 import { unstable_getServerSession } from 'next-auth';
-import mapboxgl from 'mapbox-gl';
 import Layout from '../components/layout';
 import prisma from '../lib/prisma';
 import { authOptions } from './api/auth/[...nextauth]';
 import { Page } from './_app';
 import 'mapbox-gl/dist/mapbox-gl.css';
-
-
-mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!;
+import dynamic from 'next/dynamic';
+import { DashboardMapLocation } from '../components/dashboard/DashboardMap';
 
 type Props = {
   devices: Device[];
@@ -23,49 +20,18 @@ type Props = {
  * Pair and view your paired devices.
  */
 const DashboardPage: Page<Props> = ({ devices }) => {
-  const mapContainer = useRef<HTMLDivElement | null>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
-  const [lng, setLng] = useState(-71.057);
-  const [lat, setLat] = useState(42.355);
-  const [zoom, setZoom] = useState(9);
-
-  useEffect(() => {
-    if (map.current || !mapContainer.current) {
-      return;
-    }
-
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: { lng, lat },
-      zoom,
-    });
+  const DashboardMap = dynamic(() => import('../components/dashboard/DashboardMap'), {
+    loading: () => <span>Loading...</span>,
+    ssr: false,
   });
-
-  useEffect(() => {
-    if (!map.current) {
-      return;
-    }
-    map.current.on('move', () => {
-      setLng(map.current!.getCenter().lng);
-      setLat(map.current!.getCenter().lat);
-      setZoom(map.current!.getZoom());
-    });
-  });
+  const locations: DashboardMapLocation[] = [];
 
   return (
     <>
       <h1 className="mb-6 text-5xl font-extrabold">
         Dashboard
       </h1>
-      <div>
-        <div className="map-sidebar">
-          Longitude: {lng} | Latitude {lat} | Zoom: {zoom}
-        </div>
-        <div className="map-container">
-          <div ref={mapContainer} className="map" />
-        </div>
-      </div>
+      <DashboardMap locations={locations} />
       <section className="max-w-lg">
         <Card>
           <h2 className="text-3xl font-bold">
