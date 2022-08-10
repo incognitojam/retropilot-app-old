@@ -14,6 +14,8 @@ namespace NodeJS {
 
     NEXTAUTH_GITHUB_CLIENT_ID?: string;
     NEXTAUTH_GITHUB_CLIENT_SECRET?: string;
+
+    NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN?: string;
   }
 }
 

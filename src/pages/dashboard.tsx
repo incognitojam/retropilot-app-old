@@ -1,11 +1,17 @@
+import { useEffect, useRef, useState } from 'react';
 import { Device } from '@prisma/client';
 import { Button, Card } from 'flowbite-react';
 import { GetServerSideProps } from 'next';
 import { unstable_getServerSession } from 'next-auth';
+import mapboxgl from 'mapbox-gl';
 import Layout from '../components/layout';
 import prisma from '../lib/prisma';
 import { authOptions } from './api/auth/[...nextauth]';
 import { Page } from './_app';
+import 'mapbox-gl/dist/mapbox-gl.css';
+
+
+mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!;
 
 type Props = {
   devices: Device[];
