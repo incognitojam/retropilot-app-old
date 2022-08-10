@@ -23,11 +23,49 @@ type Props = {
  * Pair and view your paired devices.
  */
 const DashboardPage: Page<Props> = ({ devices }) => {
+  const mapContainer = useRef<HTMLDivElement | null>(null);
+  const map = useRef<mapboxgl.Map | null>(null);
+  const [lng, setLng] = useState(-71.057);
+  const [lat, setLat] = useState(42.355);
+  const [zoom, setZoom] = useState(9);
+
+  useEffect(() => {
+    if (map.current || !mapContainer.current) {
+      return;
+    }
+
+    map.current = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: { lng, lat },
+      zoom,
+    });
+  });
+
+  useEffect(() => {
+    if (!map.current) {
+      return;
+    }
+    map.current.on('move', () => {
+      setLng(map.current!.getCenter().lng);
+      setLat(map.current!.getCenter().lat);
+      setZoom(map.current!.getZoom());
+    });
+  });
+
   return (
     <>
       <h1 className="mb-6 text-5xl font-extrabold">
         Dashboard
       </h1>
+      <div>
+        <div className="map-sidebar">
+          Longitude: {lng} | Latitude {lat} | Zoom: {zoom}
+        </div>
+        <div className="map-container">
+          <div ref={mapContainer} className="map" />
+        </div>
+      </div>
       <section className="max-w-lg">
         <Card>
           <h2 className="text-3xl font-bold">

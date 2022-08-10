@@ -60,6 +60,6 @@ export default function SettingsPage(): JSX.Element {
   );
 }
 
-SettingsPage.getLayout =  (page: React.ReactNode) => (
+SettingsPage.getLayout = (page: React.ReactNode) => (
   <Layout title="Settings">{page}</Layout>
 );
