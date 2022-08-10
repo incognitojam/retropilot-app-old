@@ -18,8 +18,8 @@ const DeviceCard: NextComponentType<NextPageContext, {}, Props> = ({ device }) =
             <pre className="inline">{device.nickname}</pre>
           </div>
         </div>
-        <Badge color="success">
-          Updated 2 minutes ago
+        <Badge color="success" style={{ marginLeft: 12 }}>
+          Online
         </Badge>
       </div>
     </Card>

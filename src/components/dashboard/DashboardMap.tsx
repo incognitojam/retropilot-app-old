@@ -13,9 +13,10 @@ export type DashboardMapLocation = {
 
 type Props = {
   locations: DashboardMapLocation[];
+  debug?: boolean;
 }
 
-const DashboardMap: NextComponentType<NextPageContext, {}, Props> = ({ locations }) => {
+const DashboardMap: NextComponentType<NextPageContext, {}, Props> = ({ locations, debug = false }) => {
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const [lng, setLng] = useState(-0.1276);
@@ -49,9 +50,11 @@ const DashboardMap: NextComponentType<NextPageContext, {}, Props> = ({ locations
   return (
     <div>
       <div className="map-container">
-        <div className="map-sidebar">
-          Longitude: {lng.toFixed(4)} | Latitude {lat.toFixed(4)} | Zoom: {zoom.toFixed(2)}
-        </div>
+        {debug && (
+          <div className="map-sidebar">
+            Longitude: {lng.toFixed(4)} | Latitude {lat.toFixed(4)} | Zoom: {zoom.toFixed(2)}
+          </div>
+        )}
         <div ref={mapContainer} className="map" />
       </div>
     </div>
