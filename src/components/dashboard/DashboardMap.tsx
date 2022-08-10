@@ -7,6 +7,7 @@ mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!;
 
 export type DashboardMapLocation = {
   id: string;
+  label: string;
   lat: number;
   lng: number;
 }
@@ -55,6 +56,7 @@ const DashboardMap: NextComponentType<NextPageContext, {}, Props> = ({ locations
   });
 
   const markers = useRef<Map<string, mapboxgl.Marker>>(new Map());
+  const [firstRun, setFirstRun] = useState(true);
 
   useEffect(() => {
     if (!map.current) {
@@ -62,18 +64,40 @@ const DashboardMap: NextComponentType<NextPageContext, {}, Props> = ({ locations
       return;
     }
 
+    // Zoom into the devices on first run
+    if (firstRun) {
+      setFirstRun(false);
+
+      if (locations.length === 0) {
+        return;
+      } else if (locations.length === 1) {
+        map.current.panTo([locations[0].lng, locations[0].lat]);
+      } else {
+        const bounds = new mapboxgl.LngLatBounds([[locations[0].lng, locations[0].lat], [locations[1].lng, locations[1].lat]]);
+        if (locations.length > 2) {
+          for (let i = 2; i < locations.length; i++) {
+            bounds.extend([locations[i].lng, locations[i].lat]);
+          }
+        }
+        map.current.fitBounds(bounds, { maxZoom: 13, padding: 128 });
+      }
+    }
+
     // Check that all markers are on the map
     const allMarkers = new Set(markers.current.keys());
-    for (const { id, lat, lng } of locations) {
-      if (id in allMarkers) {
+    for (const { id, label, lat, lng } of locations) {
+      if (markers.current.has(id)) {
         // Skip locations that are already on the map
         allMarkers.delete(id);
         continue;
       }
 
       // Add location marker to the map
+      const popup = new mapboxgl.Popup()
+        .setText(label);
       const marker = new mapboxgl.Marker()
         .setLngLat({ lng, lat })
+        .setPopup(popup)
         .addTo(map.current);
       markers.current.set(id, marker);
     }

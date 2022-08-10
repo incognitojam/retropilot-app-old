@@ -55,10 +55,10 @@ const DashboardPage: Page<Props> = ({ devices, locations }) => {
           ))}
         </div>
       </div>
-      <PairDeviceModal
+      {/* <PairDeviceModal
         show={pairingModal}
         onClose={() => setPairingModal(false)}
-      />
+      /> */}
     </>
   );
 };
@@ -91,8 +91,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
   const locations = devices.map(({ dongleId }) => {
     return {
       id: dongleId,
-      lng: 0,
-      lat: 0,
+      label: `Device ${dongleId}`,
+      lng: -0.1276 + Math.random() * 0.1,
+      lat: 51.5072 + Math.random() * 0.1,
     } as DashboardMapLocation;
   });
 
