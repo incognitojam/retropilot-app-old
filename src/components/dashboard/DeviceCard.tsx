@@ -1,11 +1,12 @@
 import { Device } from '@prisma/client';
 import { Badge, Card } from 'flowbite-react';
+import { NextComponentType, NextPageContext } from 'next';
 
-type DeviceCardProps = {
+type Props = {
   device: Device;
 };
 
-const DeviceCard = ({ device }: DeviceCardProps) => {
+const DeviceCard: NextComponentType<NextPageContext, {}, Props> = ({ device }) => {
   return (
     <Card>
       <div className="flex justify-between">
