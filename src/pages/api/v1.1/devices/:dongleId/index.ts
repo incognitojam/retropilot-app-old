@@ -51,6 +51,7 @@ export default async (req: NextApiRequest, res: NextApiResponse<Api.Response<Api
     return;
   }
 
+  /* eslint-disable camelcase */
   res.json({
     dongle_id: device.dongleId,
     alias: device.nickname,
@@ -59,4 +60,5 @@ export default async (req: NextApiRequest, res: NextApiResponse<Api.Response<Api
     public_key: device.publicKey,
     prime_type: Api.PrimeType.None,
   });
+  /* eslint-enable camelcase */
 };

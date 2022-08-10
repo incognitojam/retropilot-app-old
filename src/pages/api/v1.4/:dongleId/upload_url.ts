@@ -40,10 +40,10 @@ export default async (req: NextApiRequest, res: NextApiResponse<Api.Response<Upl
   }
 
   const ts = Date.now();
-  const dongle_hash: string = sha256.hmac.create(process.env.APP_SALT as string).update(dongleId as string).hex();
-  let upload_directory: string = `${dongleId}/${dongle_hash}/`;
-  let upload_filename: string;
-  let upload_token: string;
+  const dongleHash: string = sha256.hmac.create(process.env.APP_SALT as string).update(dongleId as string).hex();
+  let uploadDirectory: string = `${dongleId}/${dongleHash}/`;
+  let uploadFilename: string;
+  let uploadToken: string;
 
   if (path.indexOf('boot/') === 0 || path.indexOf('crash/') === 0 || path.indexOf('bootlog.bz2') > 0) {
     if (path && path.indexOf('bootlog.bz2') > 0) { // pre-op 0.8 way of uploading bootlogs
@@ -53,10 +53,10 @@ export default async (req: NextApiRequest, res: NextApiResponse<Api.Response<Upl
     }
 
     // TODO, allow multiple types
-    const upload_type = path.indexOf('boot/') === 0 ? 'boot' : 'crash';
+    const uploadFileType = path.indexOf('boot/') === 0 ? 'boot' : 'crash';
 
-    upload_directory += `${upload_type}`;
-    upload_filename = path.replace('/', '-');
+    uploadDirectory += `${uploadFileType}`;
+    uploadFilename = path.replace('/', '-');
   } else {
     // "2021-04-12--01-44-25--0/qlog.bz2" for example
     const [
@@ -82,23 +82,25 @@ export default async (req: NextApiRequest, res: NextApiResponse<Api.Response<Upl
       return;
     }
 
-    const drive_hash: string = sha256.hmac.create(process.env.APP_SALT as string).update(driveIdentifier).hex();
+    const driveHash: string = sha256.hmac.create(process.env.APP_SALT as string).update(driveIdentifier).hex();
 
-    upload_directory += `${drive_hash}/${driveIdentifier}/${segment}`;
-    upload_filename = filename;
+    uploadDirectory += `${driveHash}/${driveIdentifier}/${segment}`;
+    uploadFilename = filename;
 
-    const existing_drive = await prisma.drive.findFirst({ where: { dongleId, identifier: driveIdentifier } });
+    const existingDrive = await prisma.drive.findFirst({ where: { dongleId, identifier: driveIdentifier } });
 
-    if (existing_drive) {
+    if (existingDrive) {
+      /* eslint-disable camelcase */
       await prisma.drive.update({
         where: { dongleId_identifier: {dongleId, identifier: driveIdentifier} },
         data: {
-          segmentCount: Math.max(existing_drive.segmentCount ?? 0, parseInt(segment)),
+          segmentCount: Math.max(existingDrive.segmentCount ?? 0, parseInt(segment)),
           uploadCompletedAt: null,
           processedAt: null,
           lastUploadAt: new Date(),
         },
       });
+      /* eslint-enable camelcase */
     } else {
       await prisma.drive.create({
         data: {
@@ -110,11 +112,11 @@ export default async (req: NextApiRequest, res: NextApiResponse<Api.Response<Upl
       });
     }
 
-    const existing_segment = await prisma.driveSegment.findFirst({
+    const existingSegment = await prisma.driveSegment.findFirst({
       where: { dongleId, segmentNum: parseInt(segment), driveIdentifier },
     });
 
-    if (!existing_segment) {
+    if (!existingSegment) {
       await prisma.driveSegment.create({
         data: {
           dongleId,
@@ -125,9 +127,9 @@ export default async (req: NextApiRequest, res: NextApiResponse<Api.Response<Upl
     }
   }
 
-  upload_token = sha256.hmac.create(process.env.APP_SALT as string).update(dongleId + upload_filename + ts).hex();
+  uploadToken = sha256.hmac.create(process.env.APP_SALT as string).update(dongleId + uploadFilename + ts).hex();
 
   res.json({
-    url: `${config.baseUrl}/api/?filename=${upload_filename}&dir=${upload_directory}&dongleId=${dongleId}&ts=${ts}&token=${upload_token}`,
+    url: `${config.baseUrl}/api/?filename=${uploadFilename}&dir=${uploadDirectory}&dongleId=${dongleId}&ts=${ts}&token=${uploadToken}`,
   });
 };

@@ -2,9 +2,15 @@
   "root": true,
   "extends": "next/core-web-vitals",
   "rules": {
-    "semi": ["error", "always", { "omitLastInOneLineBlock": true }],
-    "quotes": ["error", "single", { "avoidEscape": true }],
+    "camelcase": ["error", {
+      "allow": [
+        "unstable_getServerSession"
+      ],
+      "properties": "always"
+    }],
     "comma-dangle": ["error", "always-multiline"],
-    "import/no-anonymous-default-export": "off"
+    "import/no-anonymous-default-export": "off",
+    "semi": ["error", "always", { "omitLastInOneLineBlock": true }],
+    "quotes": ["error", "single", { "avoidEscape": true }]
   }
 }

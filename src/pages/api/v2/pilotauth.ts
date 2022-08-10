@@ -4,8 +4,8 @@ import { Secret, verify } from '../../../lib/jwt';
 import prisma from '../../../lib/prisma';
 
 type PilotAuthResponseV1 = {
-  dongle_id: string;
   access_token: string;
+  dongle_id: string;
 };
 
 type PilotAuthResponseV2 = {
@@ -37,7 +37,7 @@ export default async (req: NextApiRequest, res: NextApiResponse<Api.Response<Pil
     imei,
     imei2,
     public_key: publicKey,
-    register_token,
+    register_token: registerToken,
     serial,
   } = req.query as { [key: string]: any };
 
@@ -50,7 +50,7 @@ export default async (req: NextApiRequest, res: NextApiResponse<Api.Response<Pil
     return;
   }
 
-  const tokenValidation = await verify(register_token, publicKey as Secret);
+  const tokenValidation = await verify(registerToken, publicKey as Secret);
   if (!tokenValidation) {
     res.status(401).json({
       code: 401,
@@ -74,6 +74,11 @@ export default async (req: NextApiRequest, res: NextApiResponse<Api.Response<Pil
     res.status(201);
   }
 
+  /* eslint-disable camelcase */
   // TODO: why is access token deprecated?
-  res.json({ dongle_id: device.dongleId, access_token: 'DEPRECATED-BUT-REQUIRED-FOR-07' });
+  res.json({
+    access_token: 'DEPRECATED-BUT-REQUIRED-FOR-07',
+    dongle_id: device.dongleId,
+  });
+  /* eslint-enable camelcase */
 };
