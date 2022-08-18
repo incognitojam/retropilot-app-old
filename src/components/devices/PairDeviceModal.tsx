@@ -1,6 +1,6 @@
 import { Button, Label, Modal, TextInput } from 'flowbite-react';
 import { NextComponentType, NextPageContext } from 'next';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { OnResultFunction, QrReader } from 'react-qr-reader';
 
 type Props = {
@@ -9,16 +9,39 @@ type Props = {
 };
 
 const PairDeviceModal: NextComponentType<NextPageContext, {}, Props> = ({ show, onClose }) => {
+  const pairingCodeInput = useRef<HTMLInputElement>(null);
   const [data, setData] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(null);
 
   const onResult: OnResultFunction = (result, error, reader) => {
     if (result) {
-      setData(result?.getText());
+      const data = result.getText();
+      setData(data);
+
+      if (data.length > 0) {
+        let token = data;
+        if (data.startsWith('https://connect.comma.ai/?pair=')) {
+          token = data.substring('https://connect.comma.ai/?pair='.length);
+        }
+
+        setToken(token);
+        console.log(token);
+      }
     }
     if (error) {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    if (!pairingCodeInput.current) {
+      return;
+    }
+
+    if (token) {
+      pairingCodeInput.current.value = token;
+    }
+  });
 
   return (
     <Modal
@@ -48,6 +71,7 @@ const PairDeviceModal: NextComponentType<NextPageContext, {}, Props> = ({ show, 
           />
         </div>
         <TextInput
+          ref={pairingCodeInput}
           id="pairing-code"
           required={true}
           onChange={(e) => setData(e.target.value)}

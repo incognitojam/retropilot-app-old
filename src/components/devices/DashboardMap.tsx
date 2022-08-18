@@ -88,6 +88,7 @@ const DashboardMap: NextComponentType<NextPageContext, {}, Props> = ({ locations
     for (const { id, label, lat, lng } of locations) {
       if (markers.current.has(id)) {
         // Skip locations that are already on the map
+        console.log(`Skipping ${id}`);
         allMarkers.delete(id);
         continue;
       }
@@ -100,6 +101,7 @@ const DashboardMap: NextComponentType<NextPageContext, {}, Props> = ({ locations
         .setPopup(popup)
         .addTo(map.current);
       markers.current.set(id, marker);
+      console.log(`Added marker for ${id} at ${lat}, ${lng}`);
     }
 
     // Remove any markers that are no longer in the locations array

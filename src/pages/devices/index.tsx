@@ -1,18 +1,18 @@
+import { useRef } from 'react';
 import { Device } from '@prisma/client';
-import { Button, Card } from 'flowbite-react';
+import { Button } from 'flowbite-react';
 import { GetServerSideProps } from 'next';
 import { unstable_getServerSession } from 'next-auth';
-import Layout from '../components/layout';
-import prisma from '../lib/prisma';
-import { authOptions } from './api/auth/[...nextauth]';
-import { Page } from './_app';
-import 'mapbox-gl/dist/mapbox-gl.css';
 import dynamic from 'next/dynamic';
-import { DashboardMapLocation } from '../components/dashboard/DashboardMap';
-import DeviceCard from '../components/dashboard/DeviceCard';
-import { createMockDevice } from '../lib/mock';
-import { useState } from 'react';
-import PairDeviceModal from '../components/dashboard/PairDeviceModal';
+import Layout from '../../components/layout';
+import prisma from '../../lib/prisma';
+import { authOptions } from '../api/auth/[...nextauth]';
+import { Page } from '../_app';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import { DashboardMapLocation } from '../../components/devices/DashboardMap';
+import DeviceCard from '../../components/devices/DeviceCard';
+import { createMockDevice } from '../../lib/mock';
+import PairDeviceModal from '../../components/devices/PairDeviceModal';
 
 type Props = {
   devices: Device[];
@@ -20,20 +20,19 @@ type Props = {
 };
 
 /**
- * Dashboard
+ * Devices Dashboard
  *
  * Pair and view your paired devices.
  */
-const DashboardPage: Page<Props> = ({ devices, locations }) => {
-  const DashboardMap = dynamic(() => import('../components/dashboard/DashboardMap'), {
+const DevicesDashboardPage: Page<Props> = ({ devices, locations }) => {
+  const DashboardMap = dynamic(() => import('../../components/devices/DashboardMap'), {
     loading: () => <span>Loading...</span>,
     ssr: false,
   });
 
-  const [pairingModal, setPairingModal] = useState(false);
-  const openPairingModal = () => {
-    setPairingModal(true);
-  };
+  const pairingModal = useRef(false);
+  const openPairingModal = () => pairingModal.current = true;
+  const closePairingModal = () => pairingModal.current = false;
 
   return (
     <>
@@ -55,15 +54,15 @@ const DashboardPage: Page<Props> = ({ devices, locations }) => {
           ))}
         </div>
       </div>
-      {/* <PairDeviceModal
-        show={pairingModal}
-        onClose={() => setPairingModal(false)}
-      /> */}
+      <PairDeviceModal
+        show={pairingModal.current}
+        onClose={closePairingModal}
+      />
     </>
   );
 };
 
-DashboardPage.getLayout = (page: React.ReactNode) => (
+DevicesDashboardPage.getLayout = (page: React.ReactNode) => (
   <Layout title="Dashboard">{page}</Layout>
 );
 
@@ -105,4 +104,4 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
   };
 };
 
-export default DashboardPage;
+export default DevicesDashboardPage;
